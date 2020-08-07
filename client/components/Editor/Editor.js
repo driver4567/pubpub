@@ -3,11 +3,12 @@ import PropTypes from 'prop-types';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { keydownHandler } from 'prosemirror-keymap';
+import { createReactiveNodeViews } from '@pubpub/prosemirror-reactive';
+
 import { getPlugins } from './plugins';
 import { collabDocPluginKey } from './plugins/collaborative';
 import { getChangeObject } from './plugins/onChange';
 import { renderStatic, buildSchema } from './utils';
-import { createReactiveNodeViews } from './plugins/reactive/nodeView';
 
 require('./styles/base.scss');
 

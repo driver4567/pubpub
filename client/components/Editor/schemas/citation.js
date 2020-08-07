@@ -1,5 +1,4 @@
 import { getCitationInlineLabel } from '../utils/citation';
-import { countCell } from '../plugins/reactive/cells/count';
 
 export default {
 	citation: {
@@ -9,14 +8,12 @@ export default {
 			value: { default: '' },
 			unstructuredValue: { default: '' },
 			id: { default: '' },
-			count: {
-				default: 0,
-				reactive: countCell(({ attrs }) => [
-					attrs.unstructuredValue,
-					attrs.structuredValue,
-				]),
-			},
 			customLabel: { default: '' },
+		},
+		reactiveAttrs: {
+			count: function() {
+				return 42;
+			},
 		},
 		parseDOM: [
 			{
