@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { keydownHandler } from 'prosemirror-keymap';
-import { createReactiveNodeViews } from '@pubpub/prosemirror-reactive';
 
 import { getPlugins } from './plugins';
 import { collabDocPluginKey } from './plugins/collaborative';
@@ -89,7 +88,6 @@ const Editor = (props) => {
 			{ mount: editorRef.current },
 			{
 				state: state,
-				nodeViews: createReactiveNodeViews(schema.current),
 				editable: (editorState) => {
 					const collaborativePluginState = collabDocPluginKey.getState(editorState) || {};
 					if (
@@ -112,6 +110,9 @@ const Editor = (props) => {
 				handleScrollToSelection: props.onScrollToSelection,
 			},
 		);
+
+		window.view = view;
+
 		// Sometimes the view will call its dispatchTransaction from the constructor, but the
 		// function itself references the `view` variable bound above. So we need to set this
 		// prop immediately after it's constructed.
@@ -144,7 +145,7 @@ const Editor = (props) => {
 			ref={editorRef}
 			className={`editor ProseMirror ${props.isReadOnly ? 'read-only' : ''}`}
 		>
-			<StaticDoc schema={schema.current} content={props.initialContent.content} />
+			{/* <StaticDoc schema={schema.current} content={props.initialContent.content} /> */}
 		</div>
 	);
 };

@@ -224,7 +224,7 @@
     }
 }
 
-.controls-link-component {
+.controls-link-component, .controls-reference-component {
     @include text-fields();
     display: flex;
     & > * {

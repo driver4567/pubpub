@@ -1,4 +1,5 @@
 import { getCitationInlineLabel } from '../utils/citation';
+import { counter } from './reactive/counter';
 
 export default {
 	citation: {
@@ -11,9 +12,7 @@ export default {
 			customLabel: { default: '' },
 		},
 		reactiveAttrs: {
-			count: function() {
-				return 42;
-			},
+			count: counter('citation', (node) => [node.attrs.value, node.attrs.structuredValue]),
 		},
 		parseDOM: [
 			{
@@ -26,40 +25,24 @@ export default {
 						id: node.getAttribute('id'),
 						value: node.getAttribute('data-value') || '',
 						unstructuredValue: node.getAttribute('data-unstructured-value') || '',
-						count: Number(node.getAttribute('data-count')) || undefined,
 						label: node.getAttribute('data-label') || '',
 					};
 				},
 			},
 		],
 		toDOM: (node) => {
-			const { href, id, count, customLabel } = node.attrs;
-			const { citationsRef, citationInlineStyle } = node.type.spec.defaultOptions;
-			/*	There is a two-fold approach here. toDOM will render the
-				citations from citationsRef so that server-side and PDF rendering will function as
-				intended (that is, take the citationInlineStyle regardless of node.attrs.label).
-				To keep things in sync, while toDOM is not called (e.g. on re-renders, count updates, etc)
-				the citations plugin sets node.attrs.label, which causes this to rerender. 
-				If we simply render from node.attrs.label, server-side and PDF rendering may be out of date 
-				from the citationInlineStyling, which may have been changed more recently than the firebase
-				steps were stored.
-			*/
-			const labelString = getCitationInlineLabel(
-				count,
-				customLabel,
-				citationInlineStyle,
-				citationsRef.current[count - 1],
-			);
+			const { href, id, count, customLabel, label, value, unstructuredValue } = node.attrs;
+			const labelString = getCitationInlineLabel(count, customLabel);
 			return [
 				href ? 'a' : 'span',
 				{
 					...(href && { href: href }),
 					...(id && { id: id }),
 					'data-node-type': 'citation',
-					'data-value': node.attrs.value,
-					'data-unstructured-value': node.attrs.unstructuredValue,
-					'data-count': node.attrs.count,
-					'data-label': node.attrs.label,
+					'data-value': value,
+					'data-unstructured-value': unstructuredValue,
+					'data-count': count,
+					'data-label': label,
 					class: 'citation',
 				},
 				labelString,

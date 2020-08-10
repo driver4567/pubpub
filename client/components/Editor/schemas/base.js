@@ -42,7 +42,7 @@ export const baseNodes = {
 	horizontal_rule: {
 		group: 'block',
 		parseDOM: [{ tag: 'hr' }],
-		selectable: false,
+		selectable: true,
 		toDOM: () => {
 			return ['div', ['hr']];
 		},
@@ -213,6 +213,9 @@ export const baseMarks = {
 			{
 				tag: 'a[href]',
 				getAttrs: (dom) => {
+					if (dom.getAttribute('data-node-type') === 'reference') {
+						return false;
+					}
 					return {
 						href: dom.getAttribute('href'),
 						title: dom.getAttribute('title'),

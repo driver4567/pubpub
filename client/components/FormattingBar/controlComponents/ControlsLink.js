@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useDebounce } from 'use-debounce';
-import { moveToEndOfSelection } from 'components/Editor';
 import { Button, AnchorButton, InputGroup } from '@blueprintjs/core';
+
+import { moveToEndOfSelection } from 'components/Editor';
 
 const propTypes = {
 	editorChangeObject: PropTypes.shape({

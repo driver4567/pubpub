@@ -1,8 +1,5 @@
 import { createReactivePlugin } from '@pubpub/prosemirror-reactive';
 
-export default (schema, props) => {
-	if (props.isReadOnly) {
-		return [];
-	}
+export default (schema) => {
 	return createReactivePlugin({ schema: schema });
 };
